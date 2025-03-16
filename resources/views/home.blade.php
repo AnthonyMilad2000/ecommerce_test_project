@@ -1,60 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .hero {
-            background-color: #007bff;
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-        }
-        .feature {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px;
-            text-align: center;
-        }
-    </style>
-</head>
+@extends('partials.app')
+
+@section('content')
+
 <body>
+<section class="section-1">
+        <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                   <!--  <img src="images/carousel-1.jpg" class="d-block w-100" alt=""> -->
 
-    <header class="hero">
-        <h1>Welcome to Our Store</h1>
-        <p>Your one-stop shop for everything!</p>
-        <a href="#products" class="btn btn-light">Shop Now</a>
-    </header>
+                    <picture>
+                        <source media="(max-width: 799px)" srcset="{{asset('front-assets/images/Smart_Watch_banner.png')}}" />
+                        <source media="(min-width: 800px)" srcset="{{asset('front-assets/images/Smart_Watch_banner.png')}}" />
+                        <img src="{{asset('front-assets/images/Smart_Watch_banner.png')}}" alt="" />
+                    </picture>
 
-    <div class="container my-5">
-        <h2 class="text-center mb-4">Featured Products</h2>
-        <div class="row">
-            @foreach ($products as $product)
-                <div class="col-md-4">
-                    <div class="feature">
-                        <h3>{{ $product->name }}</h3>
-                        <p>{{ $product->description }}</p>
-                        <p><strong>Price: ${{ number_format($product->price, 2) }}</strong></p>
-                        <p>Stock: {{ $product->stock }}</p>
-                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary">View Details</a>
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3">
+                            <h1 class="display-4 text-white mb-3">Welcome to Our Store <span>Your one-stop shop for everything!</span></h1>
+                        <!--   <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p> -->
+                           <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{route('products.index')}}">Shop Now</a>
+                        </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
-    </div>
+                
+                    </div>
+                </div>
+               
+    </section>
+        <section class="section-4 pt-5">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Featured Products</h2>
+                </div>    
+                <div class="row pb-3">
+                    @if ($products->isNotEmpty())
+                        @foreach($products as $product)
+                        @php
+                            $productImage = $product->product_images->first();
+                        @endphp
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="card product-card">
+                            <div class="product-image position-relative">
+                            <a href="{{route ('products.show',$product->id)}}" class="product-img">
+                                @if(!empty($productImage->image))
+                                    <img class="card product-card" src="{{asset('uploads/product/small/'.$productImage->image)}}"/>
+                                @else
+                                    <img src="{{asset('admin-assets/img/default-150x150.png')}}"/>
+                                @endif    
+                            </a>           
+                                </div>
+                                                 
+                            <div class="card-body text-center mt-0 px-0 pt-0">
+                                <a class="h6 link" href="{{route ('products.show',$product->id)}}">{{$product->name}}</a>
+                                <div class="price mt-2">
 
-    <footer class="text-center py-4">
-        <p>&copy; {{ date('Y') }} Your Company Name. All Rights Reserved.</p>
-    </footer>
+<span class="h5"><strong>{{$product->price}}$</strong></span>
+                                </div>
+                            </div>                        
+                        </div>                                               
+                    </div>  
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+                    @endforeach
+                    @endif
+                
+                </div>
+            </div>
+        </section>   
+@endsection
+
+@section('customJs')
+@endsection
