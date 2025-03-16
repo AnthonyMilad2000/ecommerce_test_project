@@ -46,6 +46,8 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::post('/products/{id}/review', [ProductController::class, 'submitReview'])->middleware('auth');
 Route::get('/product/{id}',[ProductController::class,'product'])->name('prdocut.details');
 
+// Admin credentials email: admin@example.com
+// password: 12345
 Route::prefix('admin')->group(function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');  
